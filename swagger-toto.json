@@ -1,0 +1,1412 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Totos API",
+        "version": "x.y.z"
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "tags": [
+        {
+            "name": "totos",
+            "description": "Gestion des totos"
+        },
+        {
+            "name": "types-totos",
+            "description": "Gestion des types d'totos"
+        },
+        {
+            "name": "niveau-uniformat",
+            "description": "gestion des niveaux uniformat"
+        }
+    ],
+    "paths": {
+        "/v2/totos/{id}": {
+            "get": {
+                "tags": [
+                    "totos"
+                ],
+                "summary": "Récupérer un toto à partir de son identifiant",
+                "operationId": "gettoto",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identifiant technique (UUID) de l'toto",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "toto retourné avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response_totosGET"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "404": {
+                        "description": "toto non trouvé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DefaultProblemDoc"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "totos"
+                ],
+                "summary": "Mettre à jour un toto dans son intégralité. (Tous les champs à valoriser sont attendus)",
+                "operationId": "updatetoto",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identifiant technique (UUID) de l'toto",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/toto_totosCreateUpdate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "toto mis à jour avec succès"
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ConstraintViolationProblemDoc"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/DefaultProblemDoc"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "404": {
+                        "description": "toto non trouvé",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DefaultProblemDoc"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "totos"
+                ],
+                "summary": "Supprimer un toto",
+                "operationId": "deletetoto",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identifiant technique (UUID) de l'toto",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "toto supprimé avec succès"
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ConstraintViolationProblemDoc"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/DefaultProblemDoc"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "404": {
+                        "description": "toto non trouvé",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DefaultProblemDoc"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "totos"
+                ],
+                "summary": "Mettre à jour partiellement un toto. (Seuls les champs renseignés sont mis à jour)",
+                "operationId": "updatePartialtoto",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identifiant technique (UUID) de l'toto",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/toto_totosCreateUpdate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "toto mis à jour avec succès"
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ConstraintViolationProblemDoc"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/DefaultProblemDoc"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "404": {
+                        "description": "toto non trouvé",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DefaultProblemDoc"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            }
+        },
+        "/v2/totos": {
+            "get": {
+                "tags": [
+                    "totos"
+                ],
+                "summary": "Récupérer la liste des totos",
+                "operationId": "gettotos",
+                "parameters": [
+                    {
+                        "name": "gareId",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Identifiant de la gare",
+                            "example": "02423"
+                        }
+                    },
+                    {
+                        "name": "codeUniformat",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Code uniformat",
+                            "example": "E102009"
+                        }
+                    },
+                    {
+                        "name": "typeId",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Identifiant d'un type d'toto",
+                            "format": "uuid",
+                            "example": "4db0517f-62b2-42b8-bb0c-d67b209c2464"
+                        }
+                    },
+                    {
+                        "name": "reference",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Référence de l'toto",
+                            "example": "9080156"
+                        }
+                    },
+                    {
+                        "name": "statut",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "description": "Liste de statut de l'toto",
+                            "example": "EN REPARATION",
+                            "items": {
+                                "type": "string",
+                                "description": "Liste de statut de l'toto",
+                                "example": "EN REPARATION"
+                            }
+                        }
+                    },
+                    {
+                        "name": "diffusableClient",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "description": "Attribut permettant de savoir si l'toto est diffusable au client",
+                            "example": true
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "minimum": 0,
+                            "type": "integer",
+                            "description": "Numéro de la page",
+                            "format": "int32",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "maximum": 32767,
+                            "minimum": 1,
+                            "type": "integer",
+                            "description": "Nombre d'éléments par page",
+                            "format": "int32",
+                            "default": 50
+                        }
+                    },
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des totos retournée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response_totosGET"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DefaultProblemDoc"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "totos"
+                ],
+                "summary": "Créer un toto",
+                "operationId": "createtoto",
+                "parameters": [
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/toto_totosCreateUpdate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "toto créé avec succès"
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ConstraintViolationProblemDoc"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/DefaultProblemDoc"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            }
+        },
+        "/v2/totos/types": {
+            "get": {
+                "tags": [
+                    "types-totos"
+                ],
+                "summary": "Récupérer les types d'totos",
+                "operationId": "gettotosTypes",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "minimum": 0,
+                            "type": "integer",
+                            "description": "Numéro de la page",
+                            "format": "int32",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "maximum": 32767,
+                            "minimum": 1,
+                            "type": "integer",
+                            "description": "Nombre d'éléments par page",
+                            "format": "int32",
+                            "default": 50
+                        }
+                    },
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des types d'totos retournée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response_totosTypesGET"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide"
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "types-totos"
+                ],
+                "summary": "Créer un type d'toto",
+                "operationId": "createtotosType",
+                "parameters": [
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/totoType_totosTypesPOST"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Type d'toto créé avec succès"
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ConstraintViolationProblemDoc"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/DefaultProblemDoc"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            }
+        },
+        "/v2/totos/niveaux-uniformat": {
+            "get": {
+                "tags": [
+                    "niveau-uniformat"
+                ],
+                "summary": "Récuperer la liste des niveaux uniformat",
+                "operationId": "getNiveauxUniformat",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "minimum": 0,
+                            "type": "integer",
+                            "description": "Numéro de la page",
+                            "format": "int32",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "maximum": 32767,
+                            "minimum": 1,
+                            "type": "integer",
+                            "description": "Nombre d'éléments par page",
+                            "format": "int32",
+                            "default": 50
+                        }
+                    },
+                    {
+                        "name": "correlation-id",
+                        "in": "header",
+                        "description": "Identifiant de correlation pour identifier ou ou plusieurs requêtes HTTP",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des niveaux uniformat retournée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DefaultProblemDoc"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Information d'authentification manquante ou invalide"
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur"
+                    },
+                    "503": {
+                        "description": "Service indisponible"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ConstraintViolationProblemDoc": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "integer",
+                        "description": "Statut de la requête HTTP",
+                        "format": "int32",
+                        "example": 400
+                    },
+                    "violations": {
+                        "type": "array",
+                        "description": "Liste complète des erreurs",
+                        "items": {
+                            "$ref": "#/components/schemas/Violation"
+                        }
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Description synthétique de l'erreur"
+                    }
+                },
+                "description": "Structure d'une erreur si un attribut n'est pas renseigné lors de la création d'un toto par exemple"
+            },
+            "Violation": {
+                "type": "object",
+                "properties": {
+                    "field": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "description": "Liste complète des erreurs"
+            },
+            "DefaultProblemDoc": {
+                "required": [
+                    "status",
+                    "title"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Identifiant de l'toto"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Description synthétique de l'erreur"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "description": "Statut de la requête HTTP",
+                        "format": "int32"
+                    },
+                    "detail": {
+                        "type": "string",
+                        "description": "Détail de l'erreur"
+                    },
+                    "swagger": {
+                        "type": "string",
+                        "description": "Rappel de l'URL de la documentation de l'API"
+                    }
+                },
+                "description": "Structure par défaut d'une erreur"
+            },
+            "AuditData_totosCreateUpdate": {
+                "type": "object",
+                "properties": {
+                    "dateCreation": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss.SSSSSS",
+                        "type": "string",
+                        "description": "Date de creation",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "dateModification": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss.SSSSSS",
+                        "type": "string",
+                        "description": "Date de modification",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "description": "Représente la structure des données d'audit",
+                "readOnly": true
+            },
+            "totoType_totosCreateUpdate": {
+                "required": [
+                    "id"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "description": "Représente un type d'toto"
+            },
+            "toto_totosCreateUpdate": {
+                "required": [
+                    "libelle",
+                    "niveauUniformat",
+                    "statut"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Identifiant",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "auditData": {
+                        "$ref": "#/components/schemas/AuditData_totosCreateUpdate"
+                    },
+                    "numeroSerie": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Numéro de série"
+                    },
+                    "reference": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Référence"
+                    },
+                    "libelle": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Libellé"
+                    },
+                    "marque": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Marque de l'toto"
+                    },
+                    "modeleConstructeur": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Modèle du constructeur"
+                    },
+                    "niveauUniformat": {
+                        "$ref": "#/components/schemas/NiveauUniformat_totosCreateUpdate"
+                    },
+                    "statut": {
+                        "type": "string",
+                        "description": "Statut de l'toto",
+                        "example": "EN REPARATION",
+                        "enum": [
+                            "EN REPARATION",
+                            "EN SERVICE",
+                            "INACTIF",
+                            "REBUT"
+                        ]
+                    },
+                    "fonctionnement": {
+                        "$ref": "#/components/schemas/Fonctionnement_totosCreateUpdate"
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "description": "Coordonnées de l'toto : point X",
+                        "format": "double"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "description": "Coordonnées de l'toto : point Y",
+                        "format": "double"
+                    },
+                    "hauteur": {
+                        "type": "number",
+                        "description": "Coordonnées de l'toto : point Z",
+                        "format": "double"
+                    },
+                    "localisationDescriptive": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Description de la localisation"
+                    },
+                    "zoneEmbarquement": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Zone d'embarquement"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/totoType_totosCreateUpdate"
+                    },
+                    "gareId": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Identifiant de la gare de rattachement de l'toto"
+                    },
+                    "adressesIp": {
+                        "type": "array",
+                        "description": "Liste des adresses IP",
+                        "items": {
+                            "type": "string",
+                            "description": "Liste des adresses IP"
+                        }
+                    },
+                    "adressesMac": {
+                        "type": "array",
+                        "description": "Liste des adresses MAC",
+                        "items": {
+                            "type": "string",
+                            "description": "Liste des adresses MAC"
+                        }
+                    },
+                    "dateReception": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss",
+                        "type": "string",
+                        "description": "Date de réception",
+                        "format": "date-time"
+                    },
+                    "accessible": {
+                        "type": "boolean",
+                        "description": "Accessibilité aux Personnes à Mobilité Réduite"
+                    },
+                    "diffusableClient": {
+                        "type": "boolean",
+                        "description": "Attribut permettant de savoir si l'toto est diffusable au client"
+                    },
+                    "dateMiseEnService": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss",
+                        "type": "string",
+                        "description": "Date de mise en service",
+                        "format": "date-time"
+                    }
+                },
+                "description": "Représente un toto"
+            },
+            "Fonctionnement_totosCreateUpdate": {
+                "required": [
+                    "etat"
+                ],
+                "type": "object",
+                "properties": {
+                    "etat": {
+                        "type": "string",
+                        "description": "Etat de fonctionnement",
+                        "example": "OK",
+                        "enum": [
+                            "OK",
+                            "KO",
+                            "INCONNU"
+                        ]
+                    },
+                    "date": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss",
+                        "type": "string",
+                        "description": "Date de fonctionnement",
+                        "format": "date-time"
+                    }
+                },
+                "description": "Représente les informations de fonctionnement d'un toto"
+            },
+            "NiveauUniformat_totosCreateUpdate": {
+                "required": [
+                    "code"
+                ],
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "maxLength": 2147483647,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Code uniformat"
+                    }
+                },
+                "description": "Représente un niveau uniformat"
+            },
+            "totoType_totosTypesPOST": {
+                "required": [
+                    "libelle"
+                ],
+                "type": "object",
+                "properties": {
+                    "libelle": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string"
+                    },
+                    "parentId": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "description": "Représente un type d'toto"
+            },
+            "AuditData_totosGET": {
+                "type": "object",
+                "properties": {
+                    "dateCreation": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss.SSSSSS",
+                        "type": "string",
+                        "description": "Date de creation",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "dateModification": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss.SSSSSS",
+                        "type": "string",
+                        "description": "Date de modification",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "description": "Représente la structure des données d'audit",
+                "readOnly": true
+            },
+            "totoType_totosGET": {
+                "required": [
+                    "id",
+                    "libelle"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "libelle": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string"
+                    }
+                },
+                "description": "Représente un type d'toto"
+            },
+            "toto_totosGET": {
+                "required": [
+                    "libelle",
+                    "niveauUniformat",
+                    "statut"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Identifiant",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "auditData": {
+                        "$ref": "#/components/schemas/AuditData_totosGET"
+                    },
+                    "numeroSerie": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Numéro de série"
+                    },
+                    "reference": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Référence"
+                    },
+                    "libelle": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Libellé"
+                    },
+                    "marque": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Marque de l'toto"
+                    },
+                    "modeleConstructeur": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Modèle du constructeur"
+                    },
+                    "niveauUniformat": {
+                        "$ref": "#/components/schemas/NiveauUniformat_totosGET"
+                    },
+                    "statut": {
+                        "type": "string",
+                        "description": "Statut de l'toto",
+                        "example": "EN REPARATION",
+                        "enum": [
+                            "EN REPARATION",
+                            "EN SERVICE",
+                            "INACTIF",
+                            "REBUT"
+                        ]
+                    },
+                    "fonctionnement": {
+                        "$ref": "#/components/schemas/Fonctionnement_totosGET"
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "description": "Coordonnées de l'toto : point X",
+                        "format": "double"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "description": "Coordonnées de l'toto : point Y",
+                        "format": "double"
+                    },
+                    "hauteur": {
+                        "type": "number",
+                        "description": "Coordonnées de l'toto : point Z",
+                        "format": "double"
+                    },
+                    "localisationDescriptive": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Description de la localisation"
+                    },
+                    "zoneEmbarquement": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Zone d'embarquement"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/totoType_totosGET"
+                    },
+                    "gareId": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Identifiant de la gare de rattachement de l'toto"
+                    },
+                    "adressesIp": {
+                        "type": "array",
+                        "description": "Liste des adresses IP",
+                        "items": {
+                            "type": "string",
+                            "description": "Liste des adresses IP"
+                        }
+                    },
+                    "adressesMac": {
+                        "type": "array",
+                        "description": "Liste des adresses MAC",
+                        "items": {
+                            "type": "string",
+                            "description": "Liste des adresses MAC"
+                        }
+                    },
+                    "dateReception": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss",
+                        "type": "string",
+                        "description": "Date de réception",
+                        "format": "date-time"
+                    },
+                    "accessible": {
+                        "type": "boolean",
+                        "description": "Accessibilité aux Personnes à Mobilité Réduite"
+                    },
+                    "diffusableClient": {
+                        "type": "boolean",
+                        "description": "Attribut permettant de savoir si l'toto est diffusable au client"
+                    },
+                    "dateMiseEnService": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss",
+                        "type": "string",
+                        "description": "Date de mise en service",
+                        "format": "date-time"
+                    }
+                },
+                "description": "Représente un toto"
+            },
+            "Fonctionnement_totosGET": {
+                "required": [
+                    "etat"
+                ],
+                "type": "object",
+                "properties": {
+                    "etat": {
+                        "type": "string",
+                        "description": "Etat de fonctionnement",
+                        "example": "OK",
+                        "enum": [
+                            "OK",
+                            "KO",
+                            "INCONNU"
+                        ]
+                    },
+                    "date": {
+                        "pattern": "yyyy-MM-ddThh:mm:ss",
+                        "type": "string",
+                        "description": "Date de fonctionnement",
+                        "format": "date-time"
+                    }
+                },
+                "description": "Représente les informations de fonctionnement d'un toto"
+            },
+            "Metadata_totosGET": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "description": "Page courante des résultats",
+                        "format": "int32"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "description": "Nombre de résultats demandé",
+                        "format": "int32"
+                    },
+                    "pageCount": {
+                        "type": "integer",
+                        "description": "Nombre de pages en fonction du paramètre size demandé",
+                        "format": "int32"
+                    },
+                    "totalCount": {
+                        "type": "integer",
+                        "description": "Nombre de résultats total",
+                        "format": "int32"
+                    }
+                },
+                "description": "Métadonnées de la réponse",
+                "example": "Eléments de pagination : size, page, total"
+            },
+            "NiveauUniformat_totosGET": {
+                "required": [
+                    "code"
+                ],
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "maxLength": 2147483647,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Code uniformat"
+                    },
+                    "libelle": {
+                        "type": "string",
+                        "description": "libellé uniformat"
+                    }
+                },
+                "description": "Représente un niveau uniformat"
+            },
+            "Response_totosGET": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/toto_totosGET"
+                        }
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Metadata_totosGET"
+                    }
+                }
+            },
+            "totoType_totosTypesGET": {
+                "required": [
+                    "id",
+                    "libelle"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "libelle": {
+                        "maxLength": 256,
+                        "minLength": 0,
+                        "type": "string"
+                    },
+                    "sousTypes": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/totoType_totosTypesGET"
+                        }
+                    }
+                },
+                "description": "Représente un type d'toto"
+            },
+            "Metadata_totosTypesGET": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "description": "Page courante des résultats",
+                        "format": "int32"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "description": "Nombre de résultats demandé",
+                        "format": "int32"
+                    },
+                    "pageCount": {
+                        "type": "integer",
+                        "description": "Nombre de pages en fonction du paramètre size demandé",
+                        "format": "int32"
+                    },
+                    "totalCount": {
+                        "type": "integer",
+                        "description": "Nombre de résultats total",
+                        "format": "int32"
+                    }
+                },
+                "description": "Métadonnées de la réponse",
+                "example": "Eléments de pagination : size, page, total"
+            },
+            "Response_totosTypesGET": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/totoType_totosTypesGET"
+                        }
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Metadata_totosTypesGET"
+                    }
+                }
+            },
+            "Metadata": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "description": "Page courante des résultats",
+                        "format": "int32"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "description": "Nombre de résultats demandé",
+                        "format": "int32"
+                    },
+                    "pageCount": {
+                        "type": "integer",
+                        "description": "Nombre de pages en fonction du paramètre size demandé",
+                        "format": "int32"
+                    },
+                    "totalCount": {
+                        "type": "integer",
+                        "description": "Nombre de résultats total",
+                        "format": "int32"
+                    }
+                },
+                "description": "Métadonnées de la réponse",
+                "example": "Eléments de pagination : size, page, total"
+            },
+            "NiveauUniformat": {
+                "required": [
+                    "code"
+                ],
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "maxLength": 2147483647,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Code uniformat"
+                    },
+                    "libelle": {
+                        "type": "string",
+                        "description": "libellé uniformat"
+                    }
+                },
+                "description": "Représente un niveau uniformat"
+            },
+            "Response": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NiveauUniformat"
+                        }
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Metadata"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "description": "Mandatory API key to call this API",
+                "name": "X-API-KEY",
+                "in": "header"
+            }
+        }
+    }
+}
